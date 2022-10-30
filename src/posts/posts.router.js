@@ -1,6 +1,6 @@
 //? Dependencies
 const router = require("express").Router();
-const postsServices = require("./posts.services");
+const postServices = require("./posts.services");
 
 //? Protect routes
 const passport = require("passport");
@@ -10,11 +10,11 @@ router
   .route("/")
   .get(
     passport.authenticate("jwt", { session: false }),
-    postsServices.getAllPosts
+    postServices.getAllPosts
   )
   .post(
     passport.authenticate("jwt", { session: false }),
-    postsServices.createPost
+    postServices.createPost
   );
 
 module.exports = router;
