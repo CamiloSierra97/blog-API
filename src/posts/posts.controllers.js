@@ -1,3 +1,4 @@
+//? Dependencies
 const Posts = require("../models/posts.models");
 const Users = require("../models/users.models");
 const Categories = require("../models/categories.models");
