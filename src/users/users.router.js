@@ -9,6 +9,8 @@ require("../middlewares/auth.middleware")(passport);
 
 //? Routes
 
+//? /api/v1/users
+
 router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
@@ -17,10 +19,7 @@ router.get(
 
 router
   .route("/me") //? /users
-  .get(
-    passport.authenticate("jwt", { session: false }),
-    userServices.getMyUser
-  )
+  .get(passport.authenticate("jwt", { session: false }), userServices.getMyUser)
   .patch(
     passport.authenticate("jwt", { session: false }),
     userServices.patchMyUser

@@ -18,14 +18,14 @@ const Posts = db.define("posts", {
     allowNull: false,
   },
   //? Foreign key
-  createdBy: {
+  userId: {
     type: DataTypes.UUID,
     allowNull: false,
-    field: "created_by",
+    field: "user_id",
     references: {
       key: "id",
       model: Users
-    },
+    }
   },
   //? Foreign key
   categoryId: {
@@ -34,8 +34,8 @@ const Posts = db.define("posts", {
     field: "category_id",
     references: {
       key: "id",
-      model: Categories,
-    },
+      model: Categories
+    }
   },
 });
 

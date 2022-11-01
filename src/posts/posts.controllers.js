@@ -4,31 +4,56 @@ const Users = require("../models/users.models");
 const Categories = require("../models/categories.models");
 const uuid = require("uuid");
 
-const getAllPost = async () => {
-  const data = await Posts.findAll({
+const getAllPost = async (offset, limit) => {
+  const data = await Posts.findAndCountAll({
+    offset: offset ? offset : 0,
+    limit: limit ? limit : 10,
+    //? Exclude some columns on data
+    attributes: {
+      exclude: ["userId", "createdAt", "updatedAt", "categoryId"],
+    },
     include: [
       {
         model: Users,
+        as: "user",
+        attributes: ["id", "firstName", "lastName", "email"],
       },
       {
         model: Categories,
+        as: "category",
         // Exclude some columns on relations
         // attributes: {
         //   exclude: ["id"],
         // },
       },
     ],
-    // Exclude some columns on data
-    // attributes: {
-    //   exclude: ["createdAt", "updatedAt", "categoryId"],
-    // },
   });
   return data;
 };
 
 const getPostById = async (id) => {
   const data = await Posts.findOne({
-    where: id,
+    where: {
+      id,
+    },
+    attributes: {
+      exclude: ["userId", "categoryId"],
+    },
+    include: [
+      {
+        model: Users,
+        as: "user",
+        attributes: ["id", "firstName", "lastName", "email"],
+      },
+      {
+        model: Categories,
+        as: "category",
+        // Exclude some columns on relations
+        // attributes: {
+        //   exclude: ["id"],
+        // },
+      },
+    ],
   });
   return data;
 };
@@ -38,14 +63,24 @@ const createPost = async (data) => {
     id: uuid.v4(),
     title: data.title,
     content: data.content,
-    createdBy: data.userId,
+    userId: data.userId,
     categoryId: data.categoryId,
   });
   return newPost;
 };
 
+const getPostsByCategory = async (categoryId) => {
+  const data = await Posts.findAll({
+    where: {
+      categoryId,
+    },
+  });
+  return data;
+};
+
 module.exports = {
   getAllPost,
   getPostById,
+  getPostsByCategory,
   createPost,
 };

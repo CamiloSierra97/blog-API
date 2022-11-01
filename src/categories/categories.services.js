@@ -14,7 +14,7 @@ const getAllCategories = (req, res) => {
 
 // /categories
 const getCategoryById = (req, res) => {
-  const id = req.params.id
+  const id = req.params.id;
   categoriesControllers
     .getCategoryById(id)
     .then((data) => {
@@ -42,7 +42,12 @@ const createCategory = (req, res) => {
         res.status(400).json({ message: err.message });
       });
   } else {
-    res.status(400).json({ message: "Missing data", description: res.message });
+    res.status(400).json({
+      message: "Missing data",
+      fields: {
+        name: "string",
+      },
+    });
   }
 };
 

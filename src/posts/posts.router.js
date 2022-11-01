@@ -6,15 +6,26 @@ const postServices = require("./posts.services");
 const passport = require("passport");
 require("../middlewares/auth.middleware")(passport);
 
+//? Routes
+
+//? /api/v1/posts
+
 router
   .route("/")
   .get(
-    passport.authenticate("jwt", { session: false }),
+    // passport.authenticate("jwt", { session: false }),
     postServices.getAllPosts
   )
   .post(
     passport.authenticate("jwt", { session: false }),
     postServices.createPost
+  );
+
+router
+  .route("/:id")
+  .get(
+    passport.authenticate("jwt", { session: false }),
+    postServices.getPostById
   );
 
 module.exports = router;
